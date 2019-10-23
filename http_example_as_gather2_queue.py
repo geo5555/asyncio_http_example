@@ -25,16 +25,18 @@ async def download_from(q):
 async def main():
     q = asyncio.Queue()
     # create 3 workers
-    workers = [asyncio.create_task(download_from(q)) for _ in range(3)]
+    workers = [asyncio.create_task(download_from(q)) for _ in range(2)]
 
     urls = [
         f'https://jsonplaceholder.typicode.com/posts/{x}' for x in range(1, 10)]
 
+    t1 = time.perf_counter()
     for url in urls:
         await q.put(url)
     # Inform the consumers there is no more work.
     await q.put(None)
     await asyncio.wait(workers)
-
+    t2 = time.perf_counter()
+    print(t2-t1)
 
 asyncio.run(main())

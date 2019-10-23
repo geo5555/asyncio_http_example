@@ -6,7 +6,6 @@ import time
 
 
 async def request(url):
-    print(url)
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             return await resp.text()
